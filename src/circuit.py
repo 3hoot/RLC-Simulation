@@ -2,24 +2,27 @@ import numpy  as np
 
 # Test version for reference 
 class Circuit:
-    def __init__(self, R1: float, R2: float, L: float, C: float) -> None:
+    def __init__(self, R1: float, R2: float, L: float, C: float, N: int8, log_omega_low: int8) -> None:
         """
         Initialize the Circuit class with resistance, inductance, and capacitance values.
         This is a test version of the class. Implement the actual logic in the future.
         
         Args:
-            R (float): Resistance in ohms.
+            R1 (float): Resistance in ohms.
             R2 (float): Second resistance in ohms.
             L (float): Inductance in henries.
             C (float): Capacitance in farads.
+
+            N (int8): number of individual omega values used to calculate Bode characteristics (recomended 100)
+            log_omega_low (int8): low end of omega values used to calculate Bode characteristics in dB*rad/s (recomended -30)
         """
         self.R1 = R1
         self.R2 = R2
         self.L = L
         self.C = C 
-        self.omega_range = np.zeros(100, dtype: int8)
-        for i in range(100):
-            self.omega_range(i) = 10^(0.1*(i-30))
+        self.omega_range = np.zeros(N, dtype: int8)
+        for i in range(N):
+            self.omega_range(i) = 10^(0.1*(i+log_omega_low))
 
     
     def response(self, input: np.array, dt: float) -> np.array:
