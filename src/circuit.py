@@ -20,6 +20,7 @@ class Circuit:
         self.R2 = R2
         self.L = L
         self.C = C 
+        self.N = N
         self.omega_range = np.zeros(N, dtype: int8)
         for i in range(N):
             self.omega_range(i) = 10^(0.1*(i+log_omega_low))
@@ -51,13 +52,13 @@ class Circuit:
         return output
     
     def Bode_Amplification(self) -> np.array:
-        bode_A =  np.zeros(100, dtype: float)
-        for i in range(100):
+        bode_A =  np.zeros(self.N, dtype: float)
+        for i in range(self.N):
             bode_A(i) = self.a/np.sqrt(self.b^2+self.omega_range(i)^2)
         return bode_A
     
     def Bode_Phase(self) -> np.array:
-        bode_P =  np.zeros(100, dtype: float)
-        for i in range(100):
+        bode_P =  np.zeros(self.N, dtype: float)
+        for i in range(self.N):
             bode_P(i) = -np.arctan2(self.omega_range(i),self.b)
         return bode_P
