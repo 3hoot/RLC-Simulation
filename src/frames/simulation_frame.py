@@ -1,6 +1,7 @@
 import tkinter as tk
 from .variables_frame import variablesFrame
 from .image_frame import imageFrame
+from .buttons_frame import ButtonsFrame
 
 
 class SimulationFrame(tk.Frame):
@@ -16,11 +17,15 @@ class SimulationFrame(tk.Frame):
         )
         schematic_frame.grid(column=0, row=0, sticky="nsew", padx=5, pady=5)
 
-        simVars_frame = variablesFrame(
+        simulationVars_frame = variablesFrame(
             self,
             controller,
-            "Parametry symulacji",
+            "Parametry układu RLC",
             controller.simulationVars,
-            entryWidth=6,
+            entryWidth=8,
+            gridDimension=(1, 1, 1),
         )
-        simVars_frame.grid(column=1, row=0, sticky="nsew", padx=5, pady=5)
+        simulationVars_frame.grid(column=1, row=0, sticky="nsew", padx=5, pady=5)
+
+        buttons_frame = ButtonsFrame(self, controller, controller.buttons)
+        buttons_frame.grid(column=0, row=1, columnspan=2, sticky="nsew", padx=5, pady=5)

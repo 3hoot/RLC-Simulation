@@ -1,7 +1,7 @@
 import tkinter as tk
-from frames.settings_frame import SettingsFrame
-from frames.simulation_frame import SimulationFrame
+from frames import SettingsFrame, SimulationFrame, SignalFrame, BodeFrame
 from utils import frameUtils as u
+from simulate import Simulator as Sim
 
 
 class App(tk.Tk):
@@ -11,16 +11,46 @@ class App(tk.Tk):
 
         # Variables
         self.simulationVars = (
-            ("R1", tk.DoubleVar(value=10.0), "kΩ"),
-            ("R2", tk.DoubleVar(value=10.0), "kΩ"),
-            ("C1", tk.DoubleVar(value=10.0), "μF"),
-            ("L1", tk.DoubleVar(value=10.0), "mH"),
+            ("R1", tk.DoubleVar(value=10.0), "[kΩ]"),
+            ("R2", tk.DoubleVar(value=10.0), "[kΩ]"),
+            ("C1", tk.DoubleVar(value=10.0), "[μF]"),
+            ("L1", tk.DoubleVar(value=10.0), "[mH]"),
         )
 
-        # self.settingsVars = {
-        #     "N": tk.IntVar(value=100),
-        #     "log_omega_low": tk.IntVar(value=100),
-        # }
+        self.settingVars = (
+            (
+                "N",
+                tk.IntVar(value=100),
+                ": Liczba punktów do obliczeń charakterystyki Bodego",
+            ),
+            (
+                "log_omega_low",
+                tk.IntVar(value=-30),
+                ": Dolna granica częstotliwości [dB*rad/s]",
+            ),
+        )
+
+        self.signalParams = (
+            ("Długość sygnału", tk.IntVar(value=1000), "[ms]"),
+            ("Krok czasowy", tk.DoubleVar(value=0.01), "[ms]"),
+            ("Częstotliwość", tk.DoubleVar(value=1.0), "[Hz]"),
+            ("Amplituda", tk.DoubleVar(value=1.0), "[V]"),
+        )
+
+        self.buttons = (
+            ("Symulacja odpowiedzi", lambda: u.showFrame(self, SignalFrame)),
+            ("Charakterystyki Bodego", lambda: u.showFrame(self, BodeFrame)),
+        )
+
+        self.selectedFunction = tk.StringVar(value="")
+
+        self.dummySimulator = Sim(
+            self.signalParams[0][1].get(),
+            self.signalParams[1][1].get(),
+            self.signalParams[2][1].get(),
+            self.signalParams[3][1].get(),
+            None,
+        )
 
         # Initialization
         container = tk.Frame(self)
