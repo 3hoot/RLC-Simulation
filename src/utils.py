@@ -30,11 +30,6 @@ class frameUtils:
                     var.set(int(entry.get()))
                 case tk.DoubleVar():
                     var.set(float(entry.get()))
-
-            # debug
-            # display the value in the entry
-            print(f"{var.get()} {type(var)}")
-
         except tk.TclError:
             match type(var):
                 case tk.IntVar():
@@ -43,7 +38,6 @@ class frameUtils:
                     var.set(0.0)
             entry.delete(0, tk.END)
             entry.insert(0, str(var.get()))
-
         except ValueError:
             pass
 

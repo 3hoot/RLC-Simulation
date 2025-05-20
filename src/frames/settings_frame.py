@@ -27,9 +27,7 @@ class SettingsFrame(tk.Frame):
         signalList = tk.Listbox(
             signalList_frame,
             listvariable=tk.Variable(
-                value=[
-                    str(k) for k in controller.dummySimulator.functionManifest.keys()
-                ]
+                value=[str(k) for k in controller.dummySignal.functionManifest.keys()]
             ),
             selectmode=tk.SINGLE,
             height=5,

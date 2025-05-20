@@ -1,7 +1,7 @@
 import tkinter as tk
 from frames import SettingsFrame, SimulationFrame, SignalFrame, BodeFrame
 from utils import frameUtils as u
-from simulate import Simulator as Sim
+from signal_simulator import Signal
 from circuit import Circuit
 
 
@@ -32,14 +32,15 @@ class App(tk.Tk):
         )
 
         self.signalParams = (
-            ("Długość sygnału", tk.IntVar(value=1000), "[ms]"),
-            ("Krok czasowy", tk.DoubleVar(value=0.01), "[ms]"),
+            ("Długość sygnału", tk.IntVar(value=100), "[s]"),
+            ("Krok czasowy", tk.DoubleVar(value=0.1), "[s]"),
             ("Częstotliwość", tk.DoubleVar(value=1.0), "[Hz]"),
             ("Amplituda", tk.DoubleVar(value=1.0), "[V]"),
         )
 
-        self.dummySimulator = Sim(
-            self.signalParams[0][1].get(),
+        self.dummySignal = Signal(
+            int(self.signalParams[0][1].get() /
+                self.signalParams[1][1].get()),
             self.signalParams[1][1].get(),
             self.signalParams[2][1].get(),
             self.signalParams[3][1].get(),
@@ -48,15 +49,16 @@ class App(tk.Tk):
 
         def signal_function_wrapper(self):
             self.circuit = Circuit(
-                self.simulationVars[0][1].get(),
-                self.simulationVars[1][1].get(),
-                self.simulationVars[2][1].get(),
-                self.simulationVars[3][1].get(),
+                self.simulationVars[0][1].get() * (10**3),
+                self.simulationVars[1][1].get() * (10**3),
+                self.simulationVars[2][1].get() / (10**6),
+                self.simulationVars[3][1].get() / (10**3),
                 self.settingVars[0][1].get(),
                 self.settingVars[1][1].get(),
             )
-            self.signal = Sim(
-                self.signalParams[0][1].get(),
+            self.signal = Signal(
+                int(self.signalParams[0][1].get() /
+                    self.signalParams[1][1].get()),
                 self.signalParams[1][1].get(),
                 self.signalParams[2][1].get(),
                 self.signalParams[3][1].get(),
@@ -65,10 +67,10 @@ class App(tk.Tk):
 
         def bode_function_wrapper(self):
             self.circuit = Circuit(
-                self.simulationVars[0][1].get(),
-                self.simulationVars[1][1].get(),
-                self.simulationVars[2][1].get(),
-                self.simulationVars[3][1].get(),
+                self.simulationVars[0][1].get() * (10**3),
+                self.simulationVars[1][1].get() * (10**3),
+                self.simulationVars[2][1].get() / (10**6),
+                self.simulationVars[3][1].get() / (10**3),
                 self.settingVars[0][1].get(),
                 self.settingVars[1][1].get(),
             )

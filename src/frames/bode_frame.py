@@ -8,11 +8,16 @@ class BodeFrame(tk.Frame):
         super().__init__(parent)
         self.controller = controller
 
-        container = tk.LabelFrame(self, text="Charakterystyka Bodego")
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+
+        container = tk.LabelFrame(self, text="Charakterystyki Bodego")
         container.grid(column=0, row=0, sticky="nsew", padx=5, pady=5)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
 
         # Amplitude plot
-        amplitude_fig = Figure(figsize=(5, 4), dpi=100)
+        amplitude_fig = Figure(figsize=(6, 5), dpi=80)
         self.amplitude_plot = amplitude_fig.add_subplot(111)
         self.amplitude_canvas = FigureCanvasTkAgg(amplitude_fig, master=container)
         self.amplitude_canvas.draw()
@@ -21,7 +26,7 @@ class BodeFrame(tk.Frame):
         )
 
         # Phase plot
-        phase_fig = Figure(figsize=(5, 4), dpi=100)
+        phase_fig = Figure(figsize=(6, 5), dpi=80)
         self.phase_plot = phase_fig.add_subplot(111)
         self.phase_canvas = FigureCanvasTkAgg(phase_fig, master=container)
         self.phase_canvas.draw()
@@ -40,22 +45,28 @@ class BodeFrame(tk.Frame):
         if not hasattr(self.controller, "circuit"):
             return
 
+        x = self.controller.circuit.omega_range
+
         # Amplitude plot
         self.amplitude_plot.clear()
         self.amplitude_plot.set_title("Charakterystyka amplitudowa")
-        self.amplitude_plot.set_xlabel("Częstotliwość [rad/s]")
+        self.amplitude_plot.set_xlabel("Pulsacja [rad/s]")
         self.amplitude_plot.set_ylabel("Wzmocnienie [dB]")
         y_amp = self.controller.circuit.Bode_Amplification()
-        self.amplitude_plot.plot(y_amp)
+        self.amplitude_plot.plot(x, y_amp)
+        self.amplitude_plot.grid()
+        self.amplitude_plot.set_xscale("log")
         self.amplitude_canvas.draw()
 
         # Phase plot
         self.phase_plot.clear()
         self.phase_plot.set_title("Charakterystyka fazowa")
-        self.phase_plot.set_xlabel("Częstotliwość [rad/s]")
+        self.phase_plot.set_xlabel("Pulsacja [rad/s]")
         self.phase_plot.set_ylabel("Faza [rad]")
         y_phase = self.controller.circuit.Bode_Phase()
-        self.phase_plot.plot(y_phase)
+        self.phase_plot.plot(x, y_phase)
+        self.phase_plot.grid()
+        self.phase_plot.set_xscale("log")
         self.phase_canvas.draw()
 
         # Update info text

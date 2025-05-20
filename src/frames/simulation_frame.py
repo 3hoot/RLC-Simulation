@@ -9,11 +9,16 @@ class SimulationFrame(tk.Frame):
         super().__init__(parent)
         self.controller = controller
 
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+
         schematic_frame = imageFrame(
             self,
             controller,
             labeltext="Schemat układu RLC",
             imagepath="assets/schematic.png",
+            dimensionX=800,
+            dimensionY=400,
         )
         schematic_frame.grid(column=0, row=0, sticky="nsew", padx=5, pady=5)
 

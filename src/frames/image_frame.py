@@ -1,7 +1,5 @@
 import tkinter as tk
-from tkinter import PhotoImage
 from PIL import Image, ImageTk
-import os
 
 
 class imageFrame(tk.LabelFrame):
@@ -13,8 +11,8 @@ class imageFrame(tk.LabelFrame):
         imagepath: str,
         padX: int = 5,
         padY: int = 5,
-        scaleX: int = 400,
-        scaleY: int = 200,
+        dimensionX: int = 400,
+        dimensionY: int = 200,
     ) -> None:
 
         super().__init__(parent, text=labeltext)
@@ -22,8 +20,8 @@ class imageFrame(tk.LabelFrame):
         self.imagepath = imagepath
         self.padX = padX
         self.padY = padY
-        self.scaleX = scaleX
-        self.scaleY = scaleY
+        self.dimensionX = dimensionX
+        self.dimensionY = dimensionY
 
         # sizing elements
         self.grid_rowconfigure(0, weight=1)
@@ -32,7 +30,7 @@ class imageFrame(tk.LabelFrame):
         # load and display the image
         with open(imagepath, "rb") as img_file:
             self.imagePIL = Image.open(img_file)
-            self.imagePIL = self.imagePIL.resize((self.scaleX, self.scaleY))
+            self.imagePIL = self.imagePIL.resize((self.dimensionX, self.dimensionY))
             self.image = ImageTk.PhotoImage(self.imagePIL)
 
             self.label = tk.Label(self, image=self.image)
