@@ -32,8 +32,8 @@ class App(tk.Tk):
         )
 
         self.signalParams = (
-            ("Długość sygnału", tk.IntVar(value=100), "[s]"),
-            ("Krok czasowy", tk.DoubleVar(value=0.1), "[s]"),
+            ("Długość sygnału", tk.IntVar(value=10), "[s]"),
+            ("Krok czasowy", tk.DoubleVar(value=0.01), "[s]"),
             ("Częstotliwość", tk.DoubleVar(value=1.0), "[Hz]"),
             ("Amplituda", tk.DoubleVar(value=1.0), "[V]"),
         )
