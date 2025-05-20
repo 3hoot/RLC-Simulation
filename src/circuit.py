@@ -20,9 +20,12 @@ class Circuit:
         self.R2 = R2
         self.L = L
         self.C = C
+        self.N = N
         self.omega_range = np.array(
-            [10 ** (0.1 * (i + log_omega_low)) for i in range(N)], dtype=float
+            [10 ** (0.1 * (i + log_omega_low)) for i in range(self.N)], dtype=float
         )
+        self.a = 1 / (self.R2 * self.C)
+        self.b = (self.R1 + self.R2) / self.R1 * self.a
 
     def response(self, input: np.array, dt: float) -> np.array:
         """
@@ -30,8 +33,6 @@ class Circuit:
         """
         N = input.size
         output = np.zeros(N, dtype=float)
-        self.a = 1 / (self.R2 * self.C)
-        self.b = (self.R1 + self.R2) / self.R1 * self.a
 
         SUM = 0.0  # Initialize SUM
         for i in range(N):
@@ -40,23 +41,23 @@ class Circuit:
             output[i] = SUM * self.a
         return np.array(output)
 
-    def Bode_Amplification(self, samples: int) -> np.array:
+    def Bode_Amplification(self) -> np.array:
         """
         Calculate the Bode amplification of the circuit.
         """
         return np.array(
             [
                 self.a / np.sqrt(self.b**2 + self.omega_range[i] ** 2)
-                for i in range(samples)
+                for i in range(self.N)
             ],
             dtype=float,
         )
 
-    def Bode_Phase(self, samples: int) -> np.array:
+    def Bode_Phase(self) -> np.array:
         """
         Calculate the Bode phase of the circuit.
         """
         return np.array(
-            [-np.arctan2(self.omega_range[i], self.b) for i in range(samples)],
+            [-np.arctan2(self.omega_range[i], self.b) for i in range(self.N)],
             dtype=float,
         )

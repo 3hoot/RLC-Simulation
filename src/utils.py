@@ -15,9 +15,12 @@ class frameUtils:
         return type(frame).__name__
 
     @staticmethod
-    def showFrame(self, frame_class) -> None:
-        frame = self.frames[frame_class]
+    def showFrame(controller, frame_class):
+        frame = controller.frames[frame_class]
         frame.tkraise()
+        # Call update_plot if the frame has it
+        if hasattr(frame, "update_plot"):
+            frame.update_plot()
 
     @staticmethod
     def updateVal(self, var: tk.Variable, entry: tk.Entry) -> None:

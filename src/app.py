@@ -2,6 +2,7 @@ import tkinter as tk
 from frames import SettingsFrame, SimulationFrame, SignalFrame, BodeFrame
 from utils import frameUtils as u
 from simulate import Simulator as Sim
+from circuit import Circuit
 
 
 class App(tk.Tk):
@@ -37,13 +38,6 @@ class App(tk.Tk):
             ("Amplituda", tk.DoubleVar(value=1.0), "[V]"),
         )
 
-        self.buttons = (
-            ("Symulacja odpowiedzi", lambda: u.showFrame(self, SignalFrame)),
-            ("Charakterystyki Bodego", lambda: u.showFrame(self, BodeFrame)),
-        )
-
-        self.selectedFunction = tk.StringVar(value="")
-
         self.dummySimulator = Sim(
             self.signalParams[0][1].get(),
             self.signalParams[1][1].get(),
@@ -51,6 +45,41 @@ class App(tk.Tk):
             self.signalParams[3][1].get(),
             None,
         )
+
+        def signal_function_wrapper(self):
+            self.circuit = Circuit(
+                self.simulationVars[0][1].get(),
+                self.simulationVars[1][1].get(),
+                self.simulationVars[2][1].get(),
+                self.simulationVars[3][1].get(),
+                self.settingVars[0][1].get(),
+                self.settingVars[1][1].get(),
+            )
+            self.signal = Sim(
+                self.signalParams[0][1].get(),
+                self.signalParams[1][1].get(),
+                self.signalParams[2][1].get(),
+                self.signalParams[3][1].get(),
+            )
+            u.showFrame(self, SignalFrame)
+
+        def bode_function_wrapper(self):
+            self.circuit = Circuit(
+                self.simulationVars[0][1].get(),
+                self.simulationVars[1][1].get(),
+                self.simulationVars[2][1].get(),
+                self.simulationVars[3][1].get(),
+                self.settingVars[0][1].get(),
+                self.settingVars[1][1].get(),
+            )
+            u.showFrame(self, BodeFrame)
+
+        self.buttons = (
+            ("Symulacja odpowiedzi", lambda: signal_function_wrapper(self)),
+            ("Charakterystyki Bodego", lambda: bode_function_wrapper(self)),
+        )
+
+        self.selectedFunction = tk.StringVar(value="")
 
         # Initialization
         container = tk.Frame(self)
@@ -72,7 +101,7 @@ class App(tk.Tk):
 
         # Frames
         self.frames = {}
-        for frame_class in (SimulationFrame, SettingsFrame):
+        for frame_class in (SimulationFrame, SettingsFrame, SignalFrame, BodeFrame):
             frame = frame_class(container, self)
             self.frames[frame_class] = frame
             frame.grid(row=0, column=0, sticky="nsew")
