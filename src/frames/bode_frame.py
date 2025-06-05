@@ -19,7 +19,8 @@ class BodeFrame(tk.Frame):
         # Amplitude plot
         amplitude_fig = Figure(figsize=(6, 5), dpi=80)
         self.amplitude_plot = amplitude_fig.add_subplot(111)
-        self.amplitude_canvas = FigureCanvasTkAgg(amplitude_fig, master=container)
+        self.amplitude_canvas = FigureCanvasTkAgg(
+            amplitude_fig, master=container)
         self.amplitude_canvas.draw()
         self.amplitude_canvas.get_tk_widget().grid(
             column=0, row=0, sticky="nsew", padx=5, pady=5
@@ -74,6 +75,6 @@ class BodeFrame(tk.Frame):
             f"R1 = {self.controller.simulationVars[0][1].get()} [kΩ], "
             + f"R2 = {self.controller.simulationVars[1][1].get()} [kΩ], "
             + f"C1 = {self.controller.simulationVars[2][1].get()} [μF], "
-            + f"L1 = {self.controller.simulationVars[3][1].get()} [H]"
+            + f"L1 = {self.controller.simulationVars[3][1].get()} [mH]"
         )
         self.info_label.config(text=info_text)
